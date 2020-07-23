@@ -1,0 +1,25 @@
+textarea#id_content {
+    width: 600px;
+    height: 120px;
+    padding: 5px;
+    background-position: bottom right;
+    border-style: solid;
+    border-color: #d3d3d3;
+    border-width: 1px;
+    resize: none;
+}
+
+#new-post {
+    margin-left: 20px;
+}
+
+.single-post {
+    border-style: solid;
+    border-color: #d3d3d3;
+    border-width: 1px;
+    padding: 5px;
+    margin-top: 0.5em;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+

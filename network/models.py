@@ -3,4 +3,19 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+    numFollowers   = models.IntegerField(default=0)
+    numFollowing   = models.IntegerField(default=0)
+
+class Post(models.Model):
+    username    = models.ForeignKey(User, on_delete=models.CASCADE)
+    createdDate = models.DateTimeField(null=True)
+    numOfLikes  = models.IntegerField(default=0)
+    content     = models.TextField(null=True)
+
+class Following(models.Model):
+    username    = models.ForeignKey(User, on_delete=models.CASCADE, related_name="login_user")
+    followUser  = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed_user", null=True)
+
+class Likes(models.Model):
+    username    = models.ForeignKey(User, on_delete=models.CASCADE)
+    post        = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)

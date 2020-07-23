@@ -1,14 +1,34 @@
 from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from datetime import datetime
 
-from .models import User
+from .forms import *
+from .models import *
 
 
 def index(request):
-    return render(request, "network/index.html")
+    postForm = PostForm(request.POST)
+
+    if request.method == "POST":
+        if postForm.is_valid():
+            postForm                = postForm.save(commit=False)
+            postForm.username       = request.user
+            postForm.createdDate    = datetime.now()
+            postForm.numOfLikes     = 0
+            postForm.save()
+            return redirect('index')
+    else:
+        postForm = PostForm()
+    
+    return render(request, "network/index.html", {
+        "postForm": PostForm(),
+        "allPosts": Post.objects.all().order_by('-createdDate')
+    })
+
 
 
 def login_view(request):
