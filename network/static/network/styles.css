@@ -23,3 +23,8 @@ textarea#id_content {
     margin-left: 20px;
 }
 
+#profile-header, #profile-name {
+    text-align: center;
+    display: block;
+}
+

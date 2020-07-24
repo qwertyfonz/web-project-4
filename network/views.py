@@ -16,7 +16,7 @@ def index(request):
     if request.method == "POST":
         if postForm.is_valid():
             postForm                = postForm.save(commit=False)
-            postForm.username       = request.user
+            postForm.user           = request.user
             postForm.createdDate    = datetime.now()
             postForm.numOfLikes     = 0
             postForm.save()
@@ -28,8 +28,6 @@ def index(request):
         "postForm": PostForm(),
         "allPosts": Post.objects.all().order_by('-createdDate')
     })
-
-
 
 def login_view(request):
     if request.method == "POST":
@@ -81,3 +79,21 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+def profile(request, username):
+    loggedInUser = request.user
+    profileName = User.objects.get(username=username) 
+    numFollowing = Following.objects.filter(user=loggedInUser).count()
+    numFollowers = Following.objects.filter(followUser=loggedInUser).count()
+    listOfMyPosts = Post.objects.filter(user=profileName).order_by('-createdDate')
+    
+    if request.method == "POST":
+        buttonValue = request.POST.get("button-click", None)
+
+    return render(request, "network/profile.html", {
+        "numFollowing": numFollowing,
+        "numFollowers": numFollowers,
+        "profileName" : username,
+        "loggedInUser": request.user.username,
+        "myPosts"     : listOfMyPosts
+    })

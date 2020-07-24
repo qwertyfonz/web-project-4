@@ -18,15 +18,13 @@
     <div id="all-posts">
         {% for post in allPosts %}
             <div class="single-post">
-                <h5>{{ post.username }}</h5>
-
+                <a href="{% url 'profile' post.user %}"><h5>{{ post.user }}</h5></a>
                 {{ post.content }}
                 <br>
                 {{ post.createdDate }}
                 <br>
-                {{ post.numOfLikes }}
+                ❤ {{ post.numOfLikes }}
             </div>
-            
         {% endfor %}
     </div>
 {% endblock %}
