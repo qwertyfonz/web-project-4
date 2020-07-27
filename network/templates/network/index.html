@@ -1,7 +1,9 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
 <h1>All Posts</h1>
+    <!--Text box for new post-->
     {% if user.is_authenticated %}
         <div id="new-post">
             <h3>New Post</h3>
@@ -15,16 +17,40 @@
         <br>
     {% endif %}
 
+    <!--Display posts from all users-->
     <div id="all-posts">
-        {% for post in allPosts %}
+        {% for post in posts %}
             <div class="single-post">
                 <a href="{% url 'profile' post.user %}"><h5>{{ post.user }}</h5></a>
-                {{ post.content }}
+
+                <div id="post-content-{{ post.id }}">{{ post.content }}</div>
+                <div class="edit-area" id="edit-content-{{ post.id }}">
+                </div>
+
                 <br>
-                {{ post.createdDate }}
+                <i>{{ post.createdDate }}</i>
                 <br>
-                ❤ {{ post.numOfLikes }}
+                
+                <!--Only let user like if they are logged in-->
+                {% if user.is_authenticated %}
+                <button type="button" id="num-likes-{{ post.id }}-button" onclick="likeUnlike('{{ post.id }}')">❤</button>
+                {% else %}
+                <button disabled type="button" id="num-likes-{{ post.id }}-button" onclick="likeUnlike('{{ post.id }}')">❤</button>
+                {% endif %}
+                <label id="num-likes-{{ post.id }}">{{ post.numOfLikes }}</label>
+
+                {% if user == post.user %}
+                    <div class="edit-button" id="edit-button-{{ post.id }}">
+                        <button onclick='edit("{{ post.content }}", "{{ post.id }}")'>Edit</button>
+                    </div>
+                {% endif %}
+
             </div>
         {% endfor %}
     </div>
+    {% include "network/pagination.html" with page=posts %}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/network.js' %}"></script>
 {% endblock %}

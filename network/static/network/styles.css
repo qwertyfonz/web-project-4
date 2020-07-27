@@ -28,3 +28,19 @@ textarea#id_content {
     display: block;
 }
 
+.edit-button {
+    position: relative;
+    float: right;
+}
+
+.edit-text-area {
+    width: 600px;
+    height: 120px;
+    padding: 5px;
+    background-position: bottom right;
+    border-style: solid;
+    border-color: #d3d3d3;
+    border-width: 1px;
+    resize: none;
+}
+
